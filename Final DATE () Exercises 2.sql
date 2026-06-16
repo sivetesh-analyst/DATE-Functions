@@ -88,4 +88,14 @@ SELECT order_id, customer_id,order_date, DATEDIFF(CURRENT_DATE(),order_date) AS 
 FROM datesexercise.dateschema.recent_orders
 WHERE DATEDIFF(CURRENT_DATE(),order_date) >30;
 
---BONUS CHALLENGE: Calculate days_since_last_purchase for each customer using CURRENT_DATE. Then use CASE to classify: ≤ 30 days = Active Customer, 31–90 days = At Risk Customer, > 90 days = Inactive Customer.
+--BONUS CHALLENGE: Calculate days_since_last_purchase for each customer using CURRENT_DATE. Then use CASE to classify: ≤ 30 days = Active Customer, 31–90 days = At Risk Customer, > 90 days = Inactive Customer. 
+SELECT customer_id,
+       customer_name,
+       last_purchase_date,
+       DATEDIFF(CURRENT_DATE(), last_purchase_date) AS days_since_last_purchase,
+    CASE
+        WHEN DATEDIFF(CURRENT_DATE(), last_purchase_date) <= 30 THEN 'Active Customer'
+        WHEN DATEDIFF(CURRENT_DATE(), last_purchase_date) BETWEEN 31 AND 90 THEN 'At Risk Customer'
+        ELSE 'Inactive Customer'
+    END AS customer_status
+FROM datesexercise.dateschema.customer_recency;
